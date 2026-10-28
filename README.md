@@ -2,14 +2,14 @@
 
 用于在 AScript（安卓）上通过 ESP32 蓝牙 HID 进行物理级点击、滑动、输入等自动化脚本。
 
-## 仓库结构
+## 工程结构（标准 AScript 工程）
 
 ```
 ascript-esp32-hid-scripts/
+├── __init__.py          # 工程入口（必须）
+├── main.py              # ESP32 HID 基础测试脚本
 ├── README.md
-├── tests/
-│   └── test_basic_hid.py      # 基础连接与点击测试脚本
-└── scripts/                 # 后续正式业务脚本放这里
+└── tests/               # 历史测试文件（可忽略）
 ```
 
 ## 使用前准备
@@ -19,11 +19,26 @@ ascript-esp32-hid-scripts/
 3. 安装并打开 AScript App
 4. 确保 `esp32` 插件已加载
 
-## 快速开始
+## 推荐导入方式（公网 Web-IDE）
 
-1. 把 `tests/test_basic_hid.py` 内容复制到 AScript 编辑器
-2. 运行脚本
-3. 观察日志和手机实际反应
+1. 打开仓库：https://github.com/467853817/ascript-esp32-hid-scripts
+2. 点击右上角 **Code** → **Download ZIP**
+3. 解压后，进入 AScript 公网开发者构建网站
+4. 点击左侧 **上传工程**
+5. 选择解压后的文件夹（或直接选 zip）进行导入
+6. 导入成功后点击运行
+
+> 工程根目录已包含 `__init__.py`，符合 AScript 导入要求。
+
+## 测试内容
+
+运行后会依次测试：
+
+1. 连接 ESP32 蓝牙 HID
+2. 点击屏幕中心
+3. 上下滑动
+4. 打开后台任务切换器
+5. 按 Home 键回桌面
 
 ## 官方文档
 
