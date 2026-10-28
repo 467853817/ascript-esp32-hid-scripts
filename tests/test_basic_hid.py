@@ -6,13 +6,14 @@ AScript ESP32 Bluetooth HID 基础测试脚本
 2. 能否获取设备名称和 MAC 地址
 3. 能否执行点击（屏幕中心）
 4. 能否执行简单滑动
-5. 能否按 Home 键返回桌面
+5. 能否打开后台任务切换器（recent）
+6. 能否按 Home 键返回桌面
 
 运行方式：
 1. 打开 AScript App
 2. 新建脚本 → 把本文件全部内容复制进去
 3. 点击运行
-4. 观察日志输出，同时看手机是否有实际点击/滑动/回桌面动作
+4. 观察日志输出，同时看手机是否有实际点击/滑动/后台/回桌面动作
 """
 
 from ascript.android import plug
@@ -63,8 +64,13 @@ def main():
     ble.slide(cx, cy + 200, cx, cy - 200, dur=600)
     time.sleep(1.5)
 
-    # 5. 按 Home 键
-    print("正在按 Home 键...")
+    # 5. 打开后台任务切换器
+    print("正在打开后台切换器...")
+    ble.recent()
+    time.sleep(2)
+
+    # 6. 按 Home 键回桌面
+    print("正在按 Home 键回桌面...")
     ble.home()
     time.sleep(1)
 
@@ -73,7 +79,8 @@ def main():
     print("1. 日志里是否显示“已连接成功”")
     print("2. 手机是否有中心点击反应")
     print("3. 是否有上下滑动")
-    print("4. 是否回到了桌面")
+    print("4. 是否打开了后台任务切换器")
+    print("5. 是否回到了桌面")
 
 if __name__ == "__main__":
     main()
