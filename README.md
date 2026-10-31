@@ -1,22 +1,30 @@
 # ascript-esp32-hid-scripts
 
-AScript + ESP32 蓝牙 HID 测试工程。
+对齐官方插件文档：https://www.ascript.cn/plug/?id=103
 
-## 怎么用（不要复制粘贴代码）
+## 使用（只下载导入，不要粘贴代码）
 
-1. 打开：https://github.com/467853817/ascript-esp32-hid-scripts
-2. 点绿色 **Code** → **Download ZIP**
-3. 在 AScript 开发页点 **导入工程**，选这个 ZIP
-4. 确保手机系统蓝牙里已配对并连接 **AS** 开头的设备
-5. 运行导入后的工程
+1. https://github.com/467853817/ascript-esp32-hid-scripts
+2. Code → Download ZIP
+3. AScript 导入工程
+4. 系统蓝牙配对并连接 **AS** 开头设备
+5. 运行
 
-## 测试内容
+## 官方关键写法
 
-- 连接 ESP32 HID
-- 打印分辨率 / 名称 / MAC
-- 点击屏幕中心
-- 上下滑动
-- 打开后台切换器
-- Home 回桌面
+```python
+from ascript.android import plug
+plug.load("esp32:4.7.0")
+from esp32 import BleDevice
+ble = BleDevice()
+print("名称", ble.get_name())
+if ble.is_conncted():
+    print("已连接")
+ble.click(394, 2116)
+```
 
-日志里应依次出现上述打印。若无屏幕反应，先确认蓝牙已连接 AS 设备。
+## 无屏幕反应时优先查硬件
+
+- 固件：官网下载的 AS 蓝牙固件，烧录后蓝牙名以 AS 开头
+- 配对：设置 → 蓝牙 → AS... → 已连接
+- 插件：使用 `esp32:4.7.0`

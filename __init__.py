@@ -1,56 +1,52 @@
 """
-AScript 工程入口
-ESP32 蓝牙 HID 基础测试（导入后直接执行）
+按官方插件页 (https://www.ascript.cn/plug/?id=103) 写法的最小测试
+先验证：连接 + 固定坐标点击 + 屏幕中心点击 + home
 """
 
 from ascript.android import plug
-plug.load("esp32")
+plug.load("esp32:4.7.0")
 from esp32 import BleDevice
 from ascript.android.system import Device
 import time
 
-print("===== ESP32 HID 基础测试开始 =====")
+print("===== 官方写法最小测试 =====")
 
-display = Device.display()
-w = display.widthPixels
-h = display.heightPixels
-print("当前屏幕分辨率:", w, "x", h)
-
-print("正在尝试连接 ESP32 蓝牙 HID...")
 ble = BleDevice()
-
-print("设备名称:", ble.get_name())
-print("MAC地址:", ble.get_mac_address())
+print("名称:", ble.get_name())
+print("MAC:", ble.get_mac_address())
 
 if ble.is_conncted():
-    print("已连接成功")
+    print("已连接")
 else:
-    print("未连接，尝试重连...")
-    if ble.re_connect():
-        print("重连成功")
-    else:
-        print("重连失败，请先在系统蓝牙里配对 AS 开头的设备")
+    print("未连接，尝试 re_connect...")
+    ok = ble.re_connect()
+    print("重连结果:", ok)
+    if not ok:
+        print("失败：请到 设置-蓝牙 确认已配对并连接 AS 开头设备")
         raise SystemExit
 
-time.sleep(1)
+time.sleep(0.5)
 
-cx = w // 2
-cy = h // 2
-print("正在点击屏幕中心:", cx, cy)
+# 官方文档示例坐标（先试固定点）
+print("点击官方示例坐标 394,2116")
+ble.click(394, 2116)
+time.sleep(1.5)
+
+# 再点屏幕中心
+d = Device.display()
+w, h = d.widthPixels, d.heightPixels
+print("分辨率:", w, "x", h)
+cx, cy = w // 2, h // 2
+print("点击中心:", cx, cy)
 ble.click(cx, cy)
 time.sleep(1.5)
 
-print("正在执行滑动测试...")
-ble.slide(cx, cy + 200, cx, cy - 200, dur=600)
-time.sleep(1.5)
-
-print("正在打开后台切换器...")
-ble.recent()
-time.sleep(2)
-
-print("正在按 Home 键回桌面...")
+print("执行 home")
 ble.home()
 time.sleep(1)
 
 print("===== 测试结束 =====")
-print("请观察：连接、中心点击、滑动、后台、回桌面是否正常")
+print("若日志有「已连接」但屏幕无反应：")
+print("1. 确认固件是官网 AS 蓝牙固件，蓝牙名以 AS 开头")
+print("2. 系统蓝牙里该设备状态为已连接")
+print("3. 可尝试忽略设备后重新配对")
